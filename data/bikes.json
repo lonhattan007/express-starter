@@ -1,0 +1,179 @@
+{
+  "bikes": [
+    {
+      "id": 1,
+      "brand": "Honda",
+      "model": "Winner X",
+      "displacement": 150,
+      "price": 300000
+    },
+    {
+      "id": 2,
+      "brand": "Yamaha",
+      "model": "NVX",
+      "displacement": 155,
+      "price": 300000
+    },
+    {
+      "id": 3,
+      "brand": "Honda",
+      "model": "Future",
+      "displacement": 125,
+      "price": 150000
+    },
+    {
+      "id": 4,
+      "brand": "Honda",
+      "model": "Wave RSX FI 110",
+      "displacement": 110,
+      "price": 150000
+    },
+    {
+      "id": 5,
+      "brand": "Honda",
+      "model": "Wave Alpha 110",
+      "displacement": 110,
+      "price": 150000
+    },
+    {
+      "id": 6,
+      "brand": "Yamaha",
+      "model": "Sirius 110cc",
+      "displacement": 110,
+      "price": 300000
+    },
+    {
+      "id": 7,
+      "brand": "Honda",
+      "model": "Vision",
+      "displacement": 110,
+      "price": 200000
+    },
+    {
+      "id": 8,
+      "brand": "Honda",
+      "model": "Air Blade",
+      "displacement": 125,
+      "price": 200000
+    },
+    {
+      "id": 9,
+      "brand": "Honda",
+      "model": "Vario 150",
+      "displacement": 150,
+      "price": 300000
+    },
+    {
+      "id": 10,
+      "brand": "Vespa",
+      "model": "Piaggio Medley 150 - Special Edition",
+      "displacement": 150,
+      "price": 500000
+    },
+    {
+      "id": 11,
+      "brand": "Honda",
+      "model": "SH150",
+      "displacement": 150,
+      "price": 550000
+    },
+    {
+      "id": 12,
+      "brand": "Yamaha",
+      "model": "PG-1",
+      "displacement": 110,
+      "price": 300000
+    },
+    {
+      "id": 13,
+      "brand": "Honda",
+      "model": "ADV 160",
+      "displacement": 160,
+      "price": 600000
+    },
+    {
+      "id": 14,
+      "brand": "Honda",
+      "model": "Spacey",
+      "displacement": 125,
+      "price": 400000
+    },
+    {
+      "id": 15,
+      "brand": "Suzuki",
+      "model": "Burgman Street 125",
+      "displacement": 125,
+      "price": 300000
+    },
+    {
+      "id": 16,
+      "brand": "Honda",
+      "model": "Super Cub 125",
+      "displacement": 125,
+      "price": 400000
+    },
+    {
+      "id": 17,
+      "brand": "Honda",
+      "model": "Lead 125",
+      "displacement": 125,
+      "price": 300000
+    },
+    {
+      "id": 18,
+      "brand": "Yamaha",
+      "model": "Nouvo",
+      "displacement": 135,
+      "price": 300000
+    },
+    {
+      "id": 19,
+      "brand": "Yamaha",
+      "model": "LEXi 155",
+      "displacement": 155,
+      "price": 300000
+    },
+    {
+      "id": 20,
+      "brand": "Honda",
+      "model": "PCX 160",
+      "displacement": 160,
+      "price": 600000
+    },
+    {
+      "id": 21,
+      "brand": "Yamaha",
+      "model": "Jupiter FI",
+      "displacement": 125,
+      "price": 300000
+    },
+    {
+      "id": 22,
+      "brand": "Hyosung",
+      "model": "WS 2024",
+      "displacement": 50,
+      "price": 100000
+    },
+    {
+      "id": 23,
+      "brand": "Hyosung",
+      "model": "HSV3",
+      "displacement": 50,
+      "price": 100000
+    },
+    {
+      "id": 24,
+      "brand": "SYM",
+      "model": "Shark 50",
+      "displacement": 50,
+      "price": 100000
+    },
+    {
+      "id": 25,
+      "brand": "SYM",
+      "model": "Attila",
+      "displacement": 50,
+      "price": 100000
+    }
+  ]
+}

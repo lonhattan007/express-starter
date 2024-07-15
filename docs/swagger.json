@@ -31,6 +31,32 @@
 				}
 			}
 		},
+		"requestBodies": {
+			"PostBikeRequestBody": {
+				"type": "object",
+				"properties": {
+					"payload": {
+						"type": "object",
+						"properties": {
+							"brand": {
+								"type": "string"
+							},
+							"model": {
+								"type": "string"
+							},
+							"displacement": {
+								"type": "number",
+								"format": "float"
+							},
+							"price": {
+								"type": "number",
+								"format": "float"
+							}
+						}
+					}
+				}
+			}
+		},
 		"responses": {
 			"GetBikesResponse": {
 				"type": "object",
@@ -67,13 +93,141 @@
 						}
 					}
 				}
+			},
+			"GetBikeByIdResponse": {
+				"type": "object",
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"data": {
+						"$ref": "#/components/schemas/Bike"
+					},
+					"message": {
+						"type": "string"
+					}
+				}
+			},
+			"PutBikeByIdResponse": {
+				"type": "object",
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"parameters": {
+			"bikeIdParam": {
+				"name": "bikeId",
+				"in": "path",
+				"description": "The specific ID of the motorbike",
+				"required": true,
+				"schema": {
+					"type": "integer",
+					"format": "int32"
+				}
+			},
+			"brandParam": {
+				"name": "brand",
+				"in": "query",
+				"description": "The specific motorbike brand",
+				"required": false,
+				"schema": {
+					"type": "string"
+				}
+			},
+			"modelParam": {
+				"name": "model",
+				"in": "query",
+				"description": "The specific motorbike model",
+				"required": false,
+				"schema": {
+					"type": "string"
+				}
+			},
+			"lowDisplacementParam": {
+				"name": "lowDisplacement",
+				"in": "query",
+				"description": "The minimum displacement volume applied to the returned motorbikes list",
+				"required": false,
+				"schema": {
+					"type": "number",
+					"format": "float"
+				}
+			},
+			"highDisplacementParam": {
+				"name": "highDisplacement",
+				"in": "query",
+				"description": "The maximum displacement volume applied to the returned motorbikes list",
+				"required": false,
+				"schema": {
+					"type": "number",
+					"format": "float"
+				}
+			},
+			"lowPriceParam": {
+				"name": "lowPrice",
+				"in": "query",
+				"description": "The minimum rent price applied to the returned motorbikes list",
+				"required": false,
+				"schema": {
+					"type": "number",
+					"format": "float"
+				}
+			},
+			"highPriceParam": {
+				"name": "highPrice",
+				"in": "query",
+				"description": "The maximum rent price applied to the returned motorbikes list",
+				"required": false,
+				"schema": {
+					"type": "number",
+					"format": "float"
+				}
+			},
+			"pageParam": {
+				"name": "page",
+				"in": "query",
+				"description": "The page desired from the total motorbikes list. Automatially set to 1 if not defined for better consistency",
+				"required": false,
+				"schema": {
+					"type": "integer",
+					"format": "int32"
+				}
 			}
 		}
 	},
 	"paths": {
 		"/bikes": {
 			"get": {
-				"description": "Return a list of motorbikes for rent",
+				"description": "Return a list of motorbikes for rent, by default use paging with the page size of 10",
+				"parameters": [
+					{
+						"$ref": "#components/parameters/brandParam"
+					},
+					{
+						"$ref": "#components/parameters/modelParam"
+					},
+					{
+						"$ref": "#components/parameters/lowDisplacementParam"
+					},
+					{
+						"$ref": "#components/parameters/highDisplacementParam"
+					},
+					{
+						"$ref": "#components/parameters/lowPriceParam"
+					},
+					{
+						"$ref": "#components/parameters/highPriceParam"
+					},
+					{
+						"$ref": "#components/parameters/pageParam"
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "A list of motorbikes is returned",
@@ -87,10 +241,99 @@
 						}
 					},
 					"404": {
-						"description": ""
+						"description": "The page query parameter is larger than the total available pages"
+					}
+				}
+			},
+			"post": {
+				"description": "Create a new motorbike and add it to the end of the list",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#components/requestBodies/PostBikeRequestBody"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "The bike is created and returned with its assigned ID",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/GetBikeByIdResponse"
+								}
+							}
+						}
 					}
 				}
 			}
+		},
+		"/bikes/{bikeId}": {
+			"get": {
+				"description": "Get the motorbike with the specific ID",
+				"responses": {
+					"200": {
+						"description": "Return information of the motorbike with the provided ID",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/GetBikeByIdResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "There is no motorbike that has the provided ID"
+					}
+				}
+			},
+			"put": {
+				"description": "Update the motorbike with the specific ID",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#components/requestBodies/PostBikeRequestBody"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Successfully update information of the motorbike with the provided ID",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#components/responses/PutBikeByIdResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "There is no motorbike that has the provided ID"
+					}
+				}
+			},
+			"delete": {
+				"description": "Delete the motorbike with the specific ID",
+				"responses": {
+					"204": {
+						"description": "Successfully delete the motorbike with the provided ID"
+					},
+					"404": {
+						"description": "There is no motorbike that has the provided ID"
+					}
+				}
+			},
+			"parameters": [
+				{
+					"$ref": "#components/parameters/bikeIdParam"
+				}
+			]
 		}
 	}
 }

@@ -4,7 +4,7 @@ const BikesService = require("../services/bikes.service").getInstance();
 var BikesController = {};
 
 BikesController.getBikeById = asyncHandler(async (req, res, next) => {
-  const result = BikesService.getBikeById(parseInt(req.params.bikeId));
+  const result = BikesService.getBikeById(req.params.bikeId);
 
   if (result.success) {
     res.status(200);
@@ -16,7 +16,6 @@ BikesController.getBikeById = asyncHandler(async (req, res, next) => {
 
 BikesController.getBikesWithQuery = asyncHandler(async (req, res, next) => {
   let query = req.query;
-  query.page = query.page || 1;
 
   const result = BikesService.getBikesWithQuery(query);
 
@@ -41,7 +40,7 @@ BikesController.addBike = asyncHandler(async (req, res, next) => {
 });
 
 BikesController.updateBike = asyncHandler(async (req, res, next) => {
-  const bikeId = parseInt(req.params.bikeId);
+  const bikeId = req.params.bikeId;
   const payload = req.body.payload;
 
   const result = BikesService.updateBike(bikeId, payload);
@@ -58,7 +57,7 @@ BikesController.updateBike = asyncHandler(async (req, res, next) => {
 });
 
 BikesController.deleteBike = asyncHandler(async (req, res, next) => {
-  const bikeId = parseInt(req.params.bikeId);
+  const bikeId = req.params.bikeId;
 
   const result = BikesService.deleteBike(bikeId);
 

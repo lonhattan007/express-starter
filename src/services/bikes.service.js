@@ -21,10 +21,6 @@ var bikesService = {
     return this;
   },
 
-  /*
-   * Find and return a bike with the given ID
-   * @param {number} bikeId - the ID of the bike
-   * */
   getIndexById(bikeId) {
     let start = 0;
     let end = this.bikes.length - 1;
@@ -131,7 +127,7 @@ var bikesService = {
     };
     this.bikes.push(bikeToAdd);
 
-    return { success: true };
+    return { success: true, data: bikeToAdd };
   },
 
   updateBike(bikeId, bike) {

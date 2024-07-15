@@ -36,7 +36,7 @@ BikesController.addBike = asyncHandler(async (req, res, next) => {
   res.status(201);
   res.send({
     ...result,
-    message: `Successfully create bike no ${payload.id}`,
+    message: `Successfully create bike no ${result.data.id}`,
   });
 });
 
@@ -47,7 +47,7 @@ BikesController.updateBike = asyncHandler(async (req, res, next) => {
   const result = BikesService.updateBike(bikeId, payload);
 
   if (result.success) {
-    res.status(201);
+    res.status(200);
     res.send({
       ...result,
       message: `Successfully update bike no ${bikeId}`,

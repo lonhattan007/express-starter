@@ -134,7 +134,7 @@ var bikesService = {
     const idx = this.getIndexById(bikeId);
 
     if (idx > -1) {
-      this.bikes[idx] = { ...bike };
+      this.bikes[idx] = { id: this.bikes[idx].id, ...bike };
       return { success: true };
     }
 

@@ -34,6 +34,8 @@ For a development environment, simply run the command:
 npm run server-dev
 ```
 
+During development deployment, APIs can be referred at the route `/doc`
+
 ## Project structure
 
 ```markdown
@@ -43,6 +45,7 @@ __ src/
 |____ controllers/ ............................. Controllers
 |____ services/ ................................... Services
 |
+|_ docs/ .................................... Documentations
 |_ data/ .................................. Mock data folder
 |_ package.json ............................ Project configs
 |_ eslint.config.mjs ........................ Linter configs

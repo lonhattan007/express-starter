@@ -1,29 +1,20 @@
 import { Router } from "express";
-import { param, query } from "express-validator";
-import { isInt } from "validator";
 import BikesController from "@/controllers/bikes.controller";
+import {
+  bikeIdValidator,
+  pageInfoValidator,
+} from "@/validators/bikes.validator";
+import { DEFAULT_PAGE_SIZE } from "@/constants";
 
 const router: Router = Router();
 
-const parseIntSanitizer = (value: string) => {
-  return isInt(value) ? parseInt(value) : 0;
-};
-
-const pageQuerySanitizer = (value: string | undefined) =>
-  value ? parseInt(value) : 1;
-
 /* GET bikes routes */
-router.get(
-  "/:bikeId",
-  param("bikeId").customSanitizer(parseIntSanitizer),
-  BikesController.getBikeById,
-);
+router.get("/:bikeId", bikeIdValidator, BikesController.getBikeById);
 
 router.get(
   "/",
-  query("page").customSanitizer(pageQuerySanitizer),
-  query("pageSize").notEmpty(),
-  query("pageSize").customSanitizer(parseIntSanitizer),
+  pageInfoValidator("page", 1),
+  pageInfoValidator("pageSize", DEFAULT_PAGE_SIZE),
   BikesController.getBikesWithQuery,
 );
 
@@ -31,17 +22,9 @@ router.get(
 router.post("/", BikesController.addBike);
 
 /* PUT bikes routes */
-router.put(
-  "/:bikeId",
-  param("bikeId").customSanitizer(parseIntSanitizer),
-  BikesController.updateBike,
-);
+router.put("/:bikeId", bikeIdValidator, BikesController.updateBike);
 
 /* DELETE bikes routes */
-router.delete(
-  "/:bikeId",
-  param("bikeId").customSanitizer(parseIntSanitizer),
-  BikesController.deleteBike,
-);
+router.delete("/:bikeId", bikeIdValidator, BikesController.deleteBike);
 
 export default router;

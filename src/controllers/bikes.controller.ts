@@ -4,15 +4,29 @@ import BikesService from "@/services/bikes.service";
 import { GetBikesQuery } from "@/types/GetBikesQuery";
 import { BikeDTO } from "@/dtos/BikeDTO";
 import createHttpError from "http-errors";
+import { Result, validationResult } from "express-validator";
 
 const bikesService = BikesService.getInstance();
 
 class BikesController {
+  private static handleValidation(req: Request, res: Response) {
+    const errors: Result = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).send({
+        success: false,
+        error: `Bad request: ${errors.array({ onlyFirstError: true })[0].msg}`,
+      });
+    }
+  }
+
   static getBikeById = async (
     req: Request,
     res: Response,
     next: NextFunction,
   ) => {
+    BikesController.handleValidation(req, res);
+
     const bikeId = parseInt(req.params.bikeId);
     const result = bikesService.getBikeById(bikeId);
 
@@ -29,11 +43,9 @@ class BikesController {
     res: Response,
     next: NextFunction,
   ) => {
-    const query: GetBikesQuery = req.query;
+    BikesController.handleValidation(req, res);
 
-    if (query.pageSize! <= 0) {
-      return next(createHttpError(400, "Bad request: invalid page size"));
-    }
+    const query: GetBikesQuery = req.query;
 
     const result = bikesService.getBikesWithQuery(query);
 
@@ -41,7 +53,7 @@ class BikesController {
       res.status(200);
       res.send(result);
     } else {
-      next();
+      next(createHttpError(400, result.error!));
     }
   };
 
@@ -65,6 +77,8 @@ class BikesController {
     res: Response,
     next: NextFunction,
   ) => {
+    BikesController.handleValidation(req, res);
+
     const bikeId = parseInt(req.params.bikeId);
     const bikeDto: BikeDTO = req.body;
 
@@ -86,6 +100,8 @@ class BikesController {
     res: Response,
     next: NextFunction,
   ) => {
+    BikesController.handleValidation(req, res);
+
     const bikeId = parseInt(req.params.bikeId);
 
     const result = bikesService.deleteBike(bikeId);

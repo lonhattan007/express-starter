@@ -1,6 +1,5 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import createHttpError, { HttpError } from "http-errors";
-import path from "path";
 import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
@@ -8,9 +7,9 @@ import morgan from "morgan";
 import { configDotenv } from "dotenv";
 configDotenv();
 
-import indexRouter from "@/routes/indexRoute";
-import documentRouter from "@/routes/docRoute";
-import bikesRouter from "@/routes/bikesRoute";
+import indexRouter from "@/routes/index";
+import documentRouter from "@/routes/docs";
+import bikesRouter from "@/routes/bikes";
 
 const app: Express = express();
 
@@ -20,10 +19,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.set("etag", "strong");
 
 app.use("/", indexRouter);
-app.use("/doc", documentRouter);
+app.use("/docs", documentRouter);
 app.use("/bikes", bikesRouter);
 
 // catch 404 and forward to error handler

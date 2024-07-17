@@ -33,6 +33,7 @@ bower_components
 build/Release
 
 ./dist/
+.tsbuildinfo
 
 # Dependency directories
 node_modules/

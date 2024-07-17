@@ -4,8 +4,6 @@ import { GetBikesQuery } from "@/types/GetBikesQuery";
 import { Pagination } from "@/types/Pagination";
 import { bikes } from "@data/bikes.json";
 
-const PAGE_SIZE = 10;
-
 export default class BikesService {
   private static instance: BikesService;
 
@@ -74,6 +72,7 @@ export default class BikesService {
 
   getBikesWithQuery(query: GetBikesQuery): {
     success: boolean;
+    error?: string;
     data?: Bike[];
     pagination?: Pagination;
   } {
@@ -107,17 +106,20 @@ export default class BikesService {
       result = result.filter((bike) => bike.price <= query.highPrice!);
     }
 
-    const page = query.page ?? 1;
-    const pageSize = query.pageSize ?? PAGE_SIZE;
+    const page = query.page!;
+    const pageSize = query.pageSize!;
     const totalItems = result.length;
     const totalPages = Math.ceil(totalItems / pageSize);
 
     if (page > totalPages) {
-      return { success: false };
+      return {
+        success: false,
+        error: "Page number exceeds total page available",
+      };
     }
 
     const offset = (page - 1) * pageSize;
-    result = result.slice(offset, Math.min(offset + pageSize, result.length));
+    result = result.slice(offset, offset + pageSize);
 
     return {
       success: true,

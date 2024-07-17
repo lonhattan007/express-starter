@@ -1,8 +1,8 @@
-import { BikeDTO } from "../dtos/BikeDTO";
-import { Bike } from "../types/Bike";
-import { GetBikesQuery } from "../types/GetBikesQuery";
-import { Pagination } from "../types/Pagination";
-import { bikes } from "../../data/bikes.json";
+import { BikeDTO } from "@/dtos/BikeDTO";
+import { Bike } from "@/types/Bike";
+import { GetBikesQuery } from "@/types/GetBikesQuery";
+import { Pagination } from "@/types/Pagination";
+import { bikes } from "@data/bikes.json";
 
 const PAGE_SIZE = 10;
 

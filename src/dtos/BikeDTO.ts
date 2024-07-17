@@ -1,4 +1,4 @@
-import { Bike } from "../types/Bike";
+import { Bike } from "@/types/Bike";
 
 // export default interface BikeDTO extends Omit<Bike, "id"> {}
 

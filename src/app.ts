@@ -8,9 +8,9 @@ import morgan from "morgan";
 import { configDotenv } from "dotenv";
 configDotenv();
 
-import indexRouter from "./routes/index";
-import documentRouter from "./routes/doc";
-import bikesRouter from "./routes/bikes";
+import indexRouter from "@/routes/indexRoute";
+import documentRouter from "@/routes/docRoute";
+import bikesRouter from "@/routes/bikesRoute";
 
 const app: Express = express();
 
@@ -49,7 +49,7 @@ app.use(function (
   res.send({
     status: err.status,
     error: message,
-    message: "No resource matches the requested URI",
+    // message: "No resource matches the requested URI",
   });
 });
 

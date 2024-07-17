@@ -187,8 +187,18 @@
       "pageParam": {
         "name": "page",
         "in": "query",
-        "description": "The page desired from the total motorbikes list. Automatially set to 1 if not defined for better consistency",
+        "description": "The page desired from the total motorbikes list. Automatially set to 1 if not defined for better consistency.",
         "required": false,
+        "schema": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "pageSizeParam": {
+        "name": "pageSize",
+        "in": "query",
+        "description": "The page size desired for the returned motorbikes list",
+        "required": true,
         "schema": {
           "type": "integer",
           "format": "int32"
@@ -221,6 +231,9 @@
           },
           {
             "$ref": "#components/parameters/pageParam"
+          },
+          {
+            "$ref": "#components/parameters/pageSizeParam"
           }
         ],
         "responses": {

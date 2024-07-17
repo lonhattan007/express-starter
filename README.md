@@ -40,11 +40,16 @@ During development deployment, APIs can be referred at the route `/doc`
 
 ```markdown
 __ src/
-|____ app.js ............................. Application entry
+|____ index.js ........................... Application entry
+|____ app.js ........................... Application configs
 |____ routes/ ...................................... Routers
 |____ controllers/ ............................. Controllers
 |____ services/ ................................... Services
+|____ dtos/ ........................................... DTOs
+|____ types/ ......................................... Types
+|____ interfaces/ ............................... Interfaces
 |
+|_ tests/ ...................................... Tests setup
 |_ docs/ .................................... Documentations
 |_ data/ .................................. Mock data folder
 |_ package.json ............................ Project configs

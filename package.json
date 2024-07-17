@@ -6,7 +6,7 @@
   "type": "esnext",
   "scripts": {
     "start": "NODE_ENV=production && node ./dist/src/index.js",
-    "dev": "nodemon ./src/index.ts",
+    "dev": "nodemon -r tsconfig-paths/register ./src/index.ts",
     "build": "tsc",
     "test": "jest",
     "lint": "eslint .",
@@ -49,6 +49,7 @@
     "prettier": "^3.3.2",
     "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.5.3",
     "typescript-eslint": "^7.16.1"
   }

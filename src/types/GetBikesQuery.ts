@@ -1,10 +1,10 @@
 export type GetBikesQuery = {
   brand?: string;
   model?: string;
-  lowDisplacement?: number;
-  highDisplacement?: number;
-  lowPrice?: number;
-  highPrice?: number;
+  minDisplacement?: number;
+  maxDisplacement?: number;
+  minPrice?: number;
+  maxPrice?: number;
   page?: number;
   pageSize?: number;
 };

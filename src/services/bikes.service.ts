@@ -86,24 +86,24 @@ export default class BikesService {
       result = result.filter((bike) => bike.model === query.model);
     }
 
-    if (query.lowDisplacement) {
+    if (query.minDisplacement) {
       result = result.filter(
-        (bike) => bike.displacement >= query.lowDisplacement!,
+        (bike) => bike.displacement >= query.minDisplacement!,
       );
     }
 
-    if (query.highDisplacement) {
+    if (query.maxDisplacement) {
       result = result.filter(
-        (bike) => bike.displacement <= query.highDisplacement!,
+        (bike) => bike.displacement <= query.maxDisplacement!,
       );
     }
 
-    if (query.lowPrice) {
-      result = result.filter((bike) => bike.price >= query.lowPrice!);
+    if (query.minPrice) {
+      result = result.filter((bike) => bike.price >= query.minPrice!);
     }
 
-    if (query.highPrice) {
-      result = result.filter((bike) => bike.price <= query.highPrice!);
+    if (query.maxPrice) {
+      result = result.filter((bike) => bike.price <= query.maxPrice!);
     }
 
     const page = query.page!;

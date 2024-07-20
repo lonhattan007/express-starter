@@ -37,7 +37,7 @@ For a development environment, simply run the command:
 npm run server-dev
 ```
 
-During development deployment, APIs can be referred at the route `/doc`
+During development deployment, APIs can be referred at the route `<hostname>:<PORT>/docs`
 
 ## Project structure
 

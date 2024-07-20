@@ -1,6 +1,6 @@
 import { param, query, ValidationChain } from "express-validator";
 
-export const bikeIdValidator = param("bikeId")
+export const bikeIdValidator: ValidationChain = param("bikeId")
   .notEmpty()
   .bail()
   .isInt({ min: 1 })
@@ -11,7 +11,7 @@ export function pageInfoValidator(
   defaultValue: number,
 ): ValidationChain {
   return query(field)
-    .customSanitizer((value: any) =>
+    .customSanitizer((value) =>
       typeof value === "undefined" ? defaultValue.toString() : value,
     )
     .isInt({ min: 1 })

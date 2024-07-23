@@ -7,11 +7,21 @@ import morgan from "morgan";
 import { configDotenv } from "dotenv";
 configDotenv();
 
+import { AppDataSource } from "./data-source";
+
 import indexRouter from "@/routes/index";
 import documentRouter from "@/routes/docs";
 import bikesRouter from "@/routes/bikes";
 
 const app: Express = express();
+
+AppDataSource.initialize()
+  .then(() => {
+    console.log("Data initialized");
+    console.log(`DB host: ${process.env.DB_HOST}`);
+    console.log(`DB port: ${process.env.DB_PORT}`);
+  })
+  .catch((err) => console.error(err));
 
 app.use(morgan("dev"));
 app.use(helmet());

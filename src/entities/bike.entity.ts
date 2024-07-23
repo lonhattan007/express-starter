@@ -1,27 +1,37 @@
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  BaseEntity,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+} from "typeorm";
 import { Bike } from "@/types/Bike";
-import { IsInt, IsNumber, Min } from "class-validator";
 
-export default class BikeEntity {
-  @IsInt()
+@Entity("bikes")
+export class BikeEntity extends BaseEntity {
+  @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
   brand: string;
 
+  @Column()
   model: string;
 
-  @IsNumber()
-  @Min(0)
+  @Column()
   displacement: number;
 
-  @IsNumber()
-  @Min(0)
+  @Column()
   price: number;
 
-  constructor(data: Bike) {
-    this.id = data.id;
-    this.brand = data.brand;
-    this.model = data.model;
-    this.displacement = data.displacement;
-    this.price = data.price;
-  }
+  @CreateDateColumn({ name: "created_at" })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: "updated_at" })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: "deleted_at" })
+  deletedAt: Date;
 }

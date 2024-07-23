@@ -1,18 +1,17 @@
+import { AppDataSource } from "@/data-source";
 import { BikeDTO } from "@/dtos/BikeDTO";
+import { BikeEntity } from "@/entities/bike.entity";
 import { Bike } from "@/types/Bike";
 import { GetBikesQuery } from "@/types/GetBikesQuery";
 import { Pagination } from "@/types/Pagination";
-import { bikes } from "@data/bikes.json";
+import { LessThanOrEqual, MoreThanOrEqual, Between, Repository } from "typeorm";
 
 export default class BikesService {
   private static instance: BikesService;
-
-  private bikes: Bike[] = [];
-  private nextId: number = 1;
+  private bikesRepository: Repository<BikeEntity>;
 
   constructor() {
-    this.bikes = bikes;
-    this.nextId = this.bikes.length + 1;
+    this.bikesRepository = AppDataSource.getRepository(BikeEntity);
   }
 
   static getInstance() {
@@ -22,157 +21,142 @@ export default class BikesService {
     return BikesService.instance;
   }
 
-  getIndexById(bikeId: number): number {
-    let start = 0;
-    let end = this.bikes.length - 1;
-    let mid: number;
-
-    while (start < end) {
-      if (bikeId < this.bikes[start].id || bikeId > this.bikes[end].id) {
-        return -1;
+  async getBikeById(bikeId: number): Promise<
+    | {
+        success: true;
+        data: Bike;
       }
+    | { success: false }
+  > {
+    const result = await this.bikesRepository.findOne({
+      where: {
+        id: bikeId,
+      },
+      select: {
+        id: true,
+        brand: true,
+        model: true,
+        displacement: true,
+        price: true,
+      },
+    });
 
-      mid = Math.floor((start + end) / 2);
-
-      if (bikeId === this.bikes[mid].id) {
-        return mid;
-      } else if (bikeId < this.bikes[mid].id) {
-        end = mid - 1;
-      } else {
-        start = mid + 1;
-      }
-    }
-
-    if (this.bikes[start].id === bikeId) {
-      return start;
-    }
-
-    return -1;
-  }
-
-  getAllBikes(): Bike[] {
-    return this.bikes;
-  }
-
-  getBikeById(bikeId: number): {
-    success: boolean;
-    data?: Bike;
-  } {
-    const index = this.getIndexById(bikeId);
-
-    if (index > -1) {
+    if (result) {
       return {
         success: true,
-        data: this.bikes[index],
+        data: result,
       };
-    }
-
-    return { success: false };
-  }
-
-  getBikesWithQuery(query: GetBikesQuery): {
-    success: boolean;
-    error?: string;
-    data?: Bike[];
-    pagination?: Pagination;
-  } {
-    let result = [...this.bikes];
-
-    if (query.brand) {
-      result = result.filter((bike) => bike.brand === query.brand);
-    }
-
-    if (query.model) {
-      result = result.filter((bike) => bike.model === query.model);
-    }
-
-    if (query.minDisplacement) {
-      result = result.filter(
-        (bike) => bike.displacement >= query.minDisplacement!,
-      );
-    }
-
-    if (query.maxDisplacement) {
-      result = result.filter(
-        (bike) => bike.displacement <= query.maxDisplacement!,
-      );
-    }
-
-    if (query.minPrice) {
-      result = result.filter((bike) => bike.price >= query.minPrice!);
-    }
-
-    if (query.maxPrice) {
-      result = result.filter((bike) => bike.price <= query.maxPrice!);
-    }
-
-    const page = query.page!;
-    const pageSize = query.pageSize!;
-    const totalItems = result.length;
-    const totalPages = Math.ceil(totalItems / pageSize);
-
-    if (page > totalPages) {
+    } else {
       return {
         success: false,
-        error: "Page number exceeds total page available",
       };
     }
+  }
 
-    const offset = (page - 1) * pageSize;
-    result = result.slice(offset, offset + pageSize);
+  getRangedOptions(lower?: number, upper?: number) {
+    if (lower && upper) {
+      return Between(lower, upper);
+    } else if (lower) {
+      return MoreThanOrEqual(lower);
+    } else if (upper) {
+      return LessThanOrEqual(upper);
+    } else {
+      return;
+    }
+  }
 
+  async getBikesWithQuery(query: GetBikesQuery) {
+    const displacementQuery = this.getRangedOptions(
+      query.minDisplacement,
+      query.maxDisplacement,
+    );
+
+    const priceQuery = this.getRangedOptions(query.minPrice, query.maxPrice);
+
+    const bikes = await this.bikesRepository.find({
+      select: {
+        id: true,
+        brand: true,
+        model: true,
+        displacement: true,
+        price: true,
+      },
+      where: {
+        displacement: displacementQuery,
+        price: priceQuery,
+      },
+      order: {
+        updatedAt: "DESC",
+      },
+    });
+
+    // TODO: Add paging mechanism
+
+    //   const page = query.page!;
+    //   const pageSize = query.pageSize!;
+    //   const totalItems = result.length;
+    //   const totalPages = Math.ceil(totalItems / pageSize);
+    //
+    //   if (page > totalPages) {
+    //     return {
+    //       success: false,
+    //       error: "Page number exceeds total page available",
+    //     };
+    //   }
+    //
+    //   const offset = (page - 1) * pageSize;
+    //   result = result.slice(offset, offset + pageSize);
+    //
+    //   return {
+    //     success: true,
+    //     data: result,
+    //     pagination: {
+    //       page: page,
+    //       pageSize: pageSize,
+    //       totalItems: totalItems,
+    //       totalPages: totalPages,
+    //     },
+    //   };
     return {
       success: true,
-      data: result,
-      pagination: {
-        page: page,
-        pageSize: pageSize,
-        totalItems: totalItems,
-        totalPages: totalPages,
-      },
+      data: bikes,
     };
   }
 
-  addBike(bikeDto: BikeDTO): {
-    success: boolean;
-    data: Bike;
-  } {
-    const newBike: Bike = {
-      id: this.nextId++,
-      ...bikeDto,
-    };
+  async addBike(newBike: BikeDTO) {
+    const bike = this.bikesRepository.create(newBike);
+    const result = await this.bikesRepository.save(bike);
 
-    this.bikes.push(newBike);
+    const returnedBike: Bike = { id: result.id, ...newBike };
 
-    return { success: true, data: newBike };
+    return { success: true, data: returnedBike };
   }
 
-  updateBike(
-    bikeId: number,
-    bikeDto: BikeDTO,
-  ): {
-    success: boolean;
-  } {
-    const idx = this.getIndexById(bikeId);
+  async updateBike(bikeId: number, bikeDto: BikeDTO) {
+    const bike = await this.bikesRepository.findOneBy({ id: bikeId });
 
-    if (idx > -1) {
-      this.bikes[idx] = { id: this.bikes[idx].id, ...bikeDto };
-      return { success: true };
+    if (!bike) {
+      return { success: false };
     }
 
-    return { success: false };
+    const result = this.bikesRepository.merge(bike, bikeDto).save();
+
+    if (!result) {
+      return { success: false };
+    }
+
+    return { success: true };
   }
 
-  deleteBike(bikeId: number): {
-    success: boolean;
-  } {
-    const idx = this.getIndexById(bikeId);
+  async deleteBikeFromRepo(bikeId: number) {
+    const result = await this.bikesRepository
+      .createQueryBuilder()
+      .softDelete()
+      .where("id = :id", {
+        id: bikeId,
+      })
+      .execute();
 
-    if (idx > -1) {
-      this.bikes = [...this.bikes.slice(0, idx), ...this.bikes.slice(idx + 1)];
-      return { success: true };
-    }
-
-    return { success: false };
+    return result;
   }
 }

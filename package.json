@@ -10,7 +10,8 @@
     "build": "tsc",
     "test": "jest",
     "lint": "eslint '{src,tests}/**/*.ts' --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "typeorm": "typeorm-ts-node-esm"
   },
   "dependencies": {
     "-": "^0.0.1",
@@ -23,7 +24,10 @@
     "helmet": "^7.1.0",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "swagger-ui-express": "^5.0.1"
+    "pg": "^8.12.0",
+    "reflect-metadata": "^0.2.2",
+    "swagger-ui-express": "^5.0.1",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@babel/core": "^7.24.9",

@@ -28,7 +28,8 @@ class BikesController {
     BikesController.handleValidation(req, res);
 
     const bikeId = parseInt(req.params.bikeId);
-    const result = bikesService.getBikeById(bikeId);
+    // const result = bikesService.getBikeById(bikeId);
+    const result = await bikesService.getBikeById(bikeId);
 
     if (result.success) {
       res.status(200);
@@ -47,23 +48,22 @@ class BikesController {
 
     const query: GetBikesQuery = req.query;
 
-    const result = bikesService.getBikesWithQuery(query);
+    // const result = bikesService.getBikesWithQuery(query);
+    const result = await bikesService.getBikesWithQuery(query);
 
     if (result.success) {
       res.status(200);
-      res.send(result);
+      res.send({ ...result });
     } else {
-      next(createHttpError(400, result.error!));
+      // next(createHttpError(400, result.error!));
     }
   };
 
   static addBike = async (req: Request, res: Response, next: NextFunction) => {
     const bikeDto: BikeDTO = req.body;
 
-    console.log("Sending post request");
-    console.log(bikeDto);
-
-    const result = bikesService.addBike(bikeDto);
+    // const result = bikesService.addBike(bikeDto);
+    const result = await bikesService.addBike(bikeDto);
 
     res.status(201);
     res.send({
@@ -82,7 +82,8 @@ class BikesController {
     const bikeId = parseInt(req.params.bikeId);
     const bikeDto: BikeDTO = req.body;
 
-    const result = bikesService.updateBike(bikeId, bikeDto);
+    // const result = bikesService.updateBike(bikeId, bikeDto);
+    const result = await bikesService.updateBike(bikeId, bikeDto);
 
     if (result.success) {
       res.status(200);
@@ -104,9 +105,10 @@ class BikesController {
 
     const bikeId = parseInt(req.params.bikeId);
 
-    const result = bikesService.deleteBike(bikeId);
+    // const result = bikesService.deleteBike(bikeId);
+    const result = await bikesService.deleteBikeFromRepo(bikeId);
 
-    if (result.success) {
+    if (result) {
       res.status(204);
       res.send({
         ...result,

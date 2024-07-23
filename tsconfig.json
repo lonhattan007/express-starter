@@ -28,7 +28,9 @@
     /* Type Checking */
     "strict": true /* Enable all strict type-checking options. */,
     "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "strictPropertyInitialization": false /* Strictly requires class properties to be defined inside the constructor */,
+    "emitDecoratorMetadata": true /* Enable this option to work with the module `reflect-metadata` */
   },
   "include": [
     "./src/**/*.ts",

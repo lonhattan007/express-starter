@@ -43,23 +43,30 @@ During development deployment, APIs can be referred at the route `<hostname>:<PO
 
 ```markdown
 __ src/
-|____ index.js ........................... Application entry
-|____ app.js ........................... Application configs
-|____ routes/ ...................................... Routers
-|____ controllers/ ............................. Controllers
-|____ services/ ................................... Services
-|____ dtos/ ........................................... DTOs
-|____ types/ ......................................... Types
-|____ interfaces/ ............................... Interfaces
-|____ constants/ .......................... Common constants
+|____ index.js ..................................... Application entry
+|____ app.js ..................................... Application configs
+|____ routes/ ................................................ Routers
+|____ controllers/ ....................................... Controllers
+|____ services/ ............................................. Services
+|____ dtos/ ..................................................... DTOs
+|____ types/ ................................................... Types
+|____ interfaces/ ......................................... Interfaces
+|____ constants/ .................................... Common constants
 |
-|_ tests/ ...................................... Tests setup
-|_ docs/ .................................... Documentations
-|_ data/ .................................. Mock data folder
-|_ package.json ............................ Project configs
-|_ eslint.config.mjs ........................ Linter configs
-|_ .prettier.json ........................ Formatter configs
-|_ .editorconfig ............... Cross-editor format configs
+|_ tests/ ................................................ Tests setup
+|_ docs/ .............................................. Documentations
+|_ data/ ............................................ Mock data folder
+|
+|_ package.json ...................................... Project configs
+|_ tsconfig.json .................................. Typescript configs
+|_ babel.config.js ............................ Babel configs for Jest
+|_ jest.config.ts ....................................... Jest configs 
+|_ eslint.config.mjs .................................. Linter configs
+|_ .prettier.json .................................. Formatter configs
+|_ .editorconfig ......................... Cross-editor format configs
+|_ Dockerfile ........................... Application image Dockerfile
+|_ docker-compose.yaml ............................... Compose configs
+|_ wheelie-api.yaml ............................... K8s deploy configs
 ```
 
 ## Naming conventions

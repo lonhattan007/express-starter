@@ -12,6 +12,8 @@ COPY . .
 # DEV Stage
 FROM base AS dev
 # start the app
+ENV DB_HOST=wheelie-db-service
+ENV DB_PORT=5432
 ENV PORT=3001
 CMD [ "npm", "run", "dev" ]
 EXPOSE 3001

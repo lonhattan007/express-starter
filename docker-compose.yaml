@@ -2,7 +2,7 @@ name: wheelie
 
 services:
   backend:
-    image: ethan.lo:wheelie
+    image: ethan.lo/wheelie
     build:
       context: .
       target: dev
@@ -17,7 +17,7 @@ services:
     expose:
       - "5432"
     ports:
-      - "5432:5432"
+      - "5000:5432"
     env_file:
       - path: ./.env
     volumes:
